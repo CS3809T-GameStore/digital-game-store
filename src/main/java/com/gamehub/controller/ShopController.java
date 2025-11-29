@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -15,47 +16,133 @@ import java.util.UUID;
 public class ShopController {
 
     @Autowired
-    private OrderRepository productRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private OrderRepository orderRepository;
 
-    // 1. List all games
+    @Autowired
+    private UserRepository userRepository;
+
+    // --- PUBLIC ENDPOINTS ---
+
     @GetMapping("/products")
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    // 2. Virtual Payment & Checkout
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            if (user.getPassword().equals(password)) {
+                if (user.isBanned()) return ResponseEntity.status(403).body(Map.of("error", "Account Banned"));
+                
+                return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "role", user.getRole(),
+                    "email", user.getEmail(),
+                    "name", user.getFullName()
+                ));
+            }
+        }
+        return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
+    }
+
     @PostMapping("/checkout")
     public ResponseEntity<?> checkout(@RequestBody Map<String, Object> payload) {
-        // Extract data from frontend
-        Long productId = Long.valueOf(payload.get("productId").toString());
-        String email = (String) payload.get("email");
-        String cardNumber = (String) payload.get("cardNumber"); // Virtual Card
+        try {
+            Object idObj = payload.get("productId");
+            if (idObj == null) return ResponseEntity.badRequest().body(Map.of("error", "ID missing"));
+            long productId = Long.parseLong(idObj.toString());
 
-        // VIRTUAL PAYMENT LOGIC
-        if (cardNumber == null || cardNumber.length() < 16) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Invalid Card Number"));
+            String email = (String) payload.get("email");
+            String cardNumber = (String) payload.get("cardNumber");
+
+            // Validate Card (Simple length check for virtual payment)
+            if (cardNumber == null || cardNumber.length() < 12) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Invalid Card"));
+            }
+
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new RuntimeException("Product not found"));
+
+            Order order = new Order();
+            order.setCustomerEmail(email);
+            order.setProductName(product.getTitle());
+            order.setAmountPaid(product.getPriceUsd()); 
+            order.setTransactionId(UUID.randomUUID().toString()); // Fake Trans ID
+            
+            orderRepository.save(order);
+
+            return ResponseEntity.ok(Map.of("status", "success", "gameKey", product.getSecretKey()));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
+    }
+    
+    @GetMapping("/my-library")
+    public List<Order> getUserLibrary(@RequestParam String email) {
+        return orderRepository.findByCustomerEmail(email);
+    }
 
-        Product product = productRepository.findById(productId).orElseThrow();
+    // --- WISHLIST ENDPOINTS ---
+    
+    @PostMapping("/wishlist/add")
+    public ResponseEntity<?> addToWishlist(@RequestBody Map<String, Object> payload) {
+        String email = (String) payload.get("email");
+        Object pId = payload.get("productId");
+        if(email == null || pId == null) return ResponseEntity.badRequest().build();
 
-        // Create Order
-        Order order = new Order();
-        order.setCustomerEmail(email);
-        order.setProductName(product.getTitle());
-        order.setAmountPaid(product.getPriceSar());
-        order.setTransactionId(UUID.randomUUID().toString()); // Fake Trans ID
+        Long productId = Long.valueOf(pId.toString());
         
-        orderRepository.save(order);
+        User user = userRepository.findByEmail(email).orElseThrow();
+        Product product = productRepository.findById(productId).orElseThrow();
+        
+        // Prevent duplicates
+        if(!user.getWishlist().contains(product)) {
+            user.getWishlist().add(product);
+            userRepository.save(user);
+        }
+        return ResponseEntity.ok(Map.of("status", "added"));
+    }
+    
+    @GetMapping("/wishlist")
+    public List<Product> getWishlist(@RequestParam String email) {
+        return userRepository.findByEmail(email)
+                .map(User::getWishlist)
+                .orElse(List.of());
+    }
 
-        // Return the "Instant Delivery" Key
+    // --- ADMIN ENDPOINTS ---
+
+    @GetMapping("/admin/sales")
+    public ResponseEntity<?> getSalesStats() {
+        long count = orderRepository.count();
+        double totalRevenue = orderRepository.findAll().stream()
+                .mapToDouble(Order::getAmountPaid).sum();
+        long userCount = userRepository.count();
+                
         return ResponseEntity.ok(Map.of(
-            "status", "success",
-            "message", "Payment Successful!",
-            "gameKey", product.getSecretKey(), // The instant delivery magic
-            "transactionId", order.getTransactionId()
+            "totalOrders", count,
+            "totalRevenue", totalRevenue,
+            "totalUsers", userCount
         ));
+    }
+
+    @PostMapping("/admin/product")
+    public ResponseEntity<?> addProduct(@RequestBody Product product) {
+        // Generate a fake key if none provided
+        if(product.getSecretKey() == null) {
+            product.setSecretKey("NEW-KEY-" + System.currentTimeMillis());
+        }
+        productRepository.save(product);
+        return ResponseEntity.ok(Map.of("status", "success"));
     }
 }
