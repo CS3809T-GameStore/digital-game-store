@@ -3,961 +3,494 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Game Store</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>GameHub - Ultimate Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #0d6efd;
-            --secondary: #6c757d;
-            --success: #198754;
-            --danger: #dc3545;
-            --warning: #ffc107;
-            --info: #0dcaf0;
-            --dark: #212529;
-            --light: #f8f9fa;
-            --purple: #6f42c1;
-            --pink: #d63384;
-            --teal: #20c997;
-            --cyan: #0dcaf0;
-            --gray: #6c757d;
-            --gray-dark: #343a40;
-            --primary-rgb: 13, 110, 253;
-            --bs-primary-rgb: 13, 110, 253;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-        }
-        
-        .navbar {
-            background: rgba(13, 13, 26, 0.95) !important;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 0 0 30px 30px;
-        }
-        
-        .navbar-brand {
-            font-weight: 800;
-            font-size: 1.8rem;
-            color: #ff0000 !important;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-        
-        .nav-link {
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border-radius: 6px;
-            margin: 0 4px;
-        }
-        
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .page-section {
-            display: none;
-            padding: 40px 0;
-        }
-        
-        .page-section.active {
-            display: block;
-        }
-        
-        .hero-section {
-            background: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center;
-            background-size: cover;
-            padding: 120px 0;
-            position: relative;
-        }
-        
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .game-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-        }
-        
-        .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        .game-card img {
-            height: 200px;
-            object-fit: cover;
-            width: 100%;
-        }
-        
-        .game-card .card-body {
-            padding: 1.5rem;
-        }
-        
-        .game-title {
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .game-price {
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: #48dbfb;
-        }
-        
-        .discount-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff0000;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-weight: 700;
-        }
-        
-        .btn-game {
-            background: linear-gradient(90deg, #ff0000, #ff6b6b);
-            border: none;
-            color: white;
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-game:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
-            color: white;
-        }
-        
-        .section-title {
-            font-weight: 700;
-            margin-bottom: 2rem;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, #ff0000, #ff6b6b);
-            border-radius: 2px;
-        }
-        
-        .category-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 30px 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-        }
-        
-        .category-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .category-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: #ff0000;
-        }
-        
-        .category-count {
-            color: #ffffff !important;
-            font-weight: 600;
-        }
-        
-        .footer {
-            background: rgba(13, 13, 26, 0.95);
-            padding: 40px 0;
-            margin-top: 80px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .content-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 30px;
-            margin-top: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .form-control {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 12px 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-        
-        .form-control:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #ff0000;
-            box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
-            color: white;
-        }
-        
-        .btn-login {
-            background: linear-gradient(90deg, #ff0000, #ff6b6b);
-            border: none;
-            color: white;
-            font-weight: 600;
-            padding: 12px;
-            border-radius: 6px;
-            width: 100%;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-        
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
-        }
-        
-        .login-links {
-            text-align: center;
-            margin-top: 20px;
-        }
-        
-        .login-links a {
-            color: #ff0000;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .login-links a:hover {
-            color: #ff6b6b;
-        }
-        
-        .social-login {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-        
-        .facebook {
-            background: #3b5998;
-        }
-        
-        .google {
-            background: #db4437;
-        }
-        
-        .twitter {
-            background: #1da1f2;
-        }
-        
-        .social-btn:hover {
-            transform: translateY(-3px);
-        }
-        
-        .featured-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: linear-gradient(90deg, #ff0000, #ff6b6b);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-weight: 700;
-            font-size: 0.8rem;
-        }
-        
-        .game-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 80px 0;
-            }
-            
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-            
-            .game-card {
-                margin-bottom: 20px;
-            }
-        }
+        :root { --primary: #e94560; --dark: #1a1a2e; --card-bg: #16213e; }
+        body { background-color: var(--dark); color: #fff; font-family: 'Segoe UI', sans-serif; }
+        .navbar { background: rgba(22, 33, 62, 0.98); border-bottom: 1px solid #333; }
+        .card { background: var(--card-bg); border: none; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); border: 1px solid var(--primary); }
+        .btn-primary { background-color: var(--primary); border: none; }
+        .page-section { display: none; padding: 20px 0; }
+        .page-section.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        .tab-content { border: 1px solid #333; border-top: none; padding: 20px; border-radius: 0 0 10px 10px; }
+        .nav-tabs .nav-link.active { background-color: var(--primary); color: white; border: none; }
+        .nav-tabs .nav-link { color: #bbb; }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="#" onclick="showPage('home')">
-                <i class="fas fa-gamepad me-2"></i>
-                GAMEHUB
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <!-- Left Side Navigation with Icons -->
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showPage('home')">
-                            <i class="fas fa-home me-1"></i>
-                            Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showPage('games')">
-                            <i class="fas fa-gamepad me-1"></i>
-                            Games
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showPage('library')">
-                            <i class="fas fa-book me-1"></i>
-                            My Library
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showPage('admin')">
-                            <i class="fas fa-cogs me-1"></i>
-                            Admin Panel
-                        </a>
-                    </li>
-                </ul>
-                
-                <!-- Right Side Settings & Auth -->
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown me-3">
-                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-globe me-1"></i>
-                            Language
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">English</a></li>
-                            <li><a class="dropdown-item" href="#">Arabic</a></li>
-                        </ul>
-                    </li>
-                    
-                    <li class="nav-item dropdown me-3">
-                        <a class="nav-link dropdown-toggle" href="#" id="currencyDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-money-bill-wave me-1"></i>
-                            Currency
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">USD ($)</a></li>
-                            <li><a class="dropdown-item" href="#">SAR (ر.س)</a></li>
-                        </ul>
-                    </li>
-                    
-                    <li class="nav-item me-3">
-                        <a class="nav-link position-relative" href="#" onclick="showPage('cart')">
-                            <i class="fas fa-shopping-cart me-1"></i>
-                            Cart
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="authDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user me-1"></i>
-                            Account
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="showPage('login')">
-                                <i class="fas fa-sign-in-alt me-2"></i>Login
-                            </a></li>
-                            <li><a class="dropdown-item" href="#" onclick="showPage('register')">
-                                <i class="fas fa-user-plus me-2"></i>Register
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#" onclick="showPage('profile')">
-                                <i class="fas fa-user-circle me-2"></i>Profile
-                            </a></li>
-                            <li><a class="dropdown-item" href="#" onclick="showPage('wishlist')">
-                                <i class="fas fa-heart me-2"></i>Wishlist
-                            </a></li>
-                            <li><a class="dropdown-item" href="#" onclick="showPage('logout')">
-                                <i class="fas fa-sign-out-alt me-2"></i>Logout
-                            </a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Home Page -->
-    <section id="home" class="page-section active">
-        <!-- Hero Section -->
-        <div class="hero-section">
-            <div class="container hero-content">
-                <div class="row align-items-center">
-                    <div class="col-lg-6">
-                        <h1 class="display-4 fw-bold mb-4">Discover Your Next Favorite Game</h1>
-                        <p class="lead mb-4">Explore thousands of games across all genres. From action-packed adventures to mind-bending puzzles, we have something for every gamer.</p>
-                        <div class="d-flex gap-3 flex-wrap">
-                            <button class="btn btn-game btn-lg" onclick="showPage('games')">Browse Games</button>
-                            <button class="btn btn-outline-light btn-lg">View Deals</button>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 text-center">
-                        <div class="position-relative d-inline-block">
-                            <img src="https://images.unsplash.com/photo-1551103782-8ab07afd45c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Featured Game" class="img-fluid rounded-3 shadow-lg" style="max-height: 400px;">
-                            <div class="featured-badge">FEATURED</div>
-                        </div>
-                    </div>
-                </div>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#" onclick="showPage('home')"><i class="fas fa-gamepad"></i> GAMEHUB</a>
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" onclick="showPage('home')" data-lang="home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('library')" data-lang="library">My Library</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('wishlist')" data-lang="wishlist">Wishlist</a></li>
+            </ul>
+            <div class="d-flex align-items-center gap-3">
+                <!-- Currency & Language -->
+                <select class="form-select form-select-sm bg-dark text-white" id="currency" onchange="updateSettings()">
+                    <option value="USD">USD ($)</option>
+                    <option value="SAR">SAR (ر.س)</option>
+                </select>
+                <select class="form-select form-select-sm bg-dark text-white" id="language" onchange="updateSettings()">
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
+                </select>
+                <!-- Cart -->
+                <a class="nav-link position-relative" onclick="showPage('cart')" style="cursor: pointer;">
+                    <i class="fas fa-shopping-cart fa-lg"></i>
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle" id="cart-count">0</span>
+                </a>
+                <!-- Auth -->
+                <button class="btn btn-sm btn-outline-light" id="auth-btn" onclick="showPage('login')">Login</button>
             </div>
-        </div>
-
-        <!-- Featured Games -->
-  <!-- DYNAMIC GAMES SECTION (Connects to Java Backend) -->
-<div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="section-title">Featured Games</h2>
-        <!-- Filter Buttons -->
-        <div class="btn-group">
-            <button class="btn btn-outline-light btn-sm active" onclick="loadGames()">All</button>
-            <button class="btn btn-outline-light btn-sm">Action</button>
-            <button class="btn btn-outline-light btn-sm">RPG</button>
         </div>
     </div>
+</nav>
 
-    <!-- The ID 'games-container' is what our JavaScript looks for -->
-    <div class="row g-4" id="games-container">
-        <!-- Loading Spinner (Visible until Java responds) -->
-        <div class="col-12 text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="mt-3 text-muted">Loading games from GameHub...</p>
+<!-- 1. HOME PAGE -->
+<div id="home" class="page-section active">
+    <div class="container">
+        <div class="p-5 mb-4 rounded-3 text-white" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://placehold.co/1200x400/222/e94560?text=Massive+Sale'); background-size: cover;">
+            <h1 class="display-4 fw-bold" data-lang="welcome">Welcome to GameHub</h1>
+            <p class="fs-5" data-lang="hero_desc">Cheap Games, Instant Delivery.</p>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="d-flex gap-2 mb-4 overflow-auto pb-2">
+            <button class="btn btn-outline-light" onclick="filterGames('all')">All</button>
+            <button class="btn btn-outline-light" onclick="filterGames('Action')">Action</button>
+            <button class="btn btn-outline-light" onclick="filterGames('FPS')">FPS</button>
+            <button class="btn btn-outline-light" onclick="filterGames('RPG')">RPG</button>
+            <button class="btn btn-outline-light" onclick="filterGames('Arcade')">Arcade</button>
+            <button class="btn btn-outline-light" onclick="filterGames('Cards')">Gift Cards</button>
+        </div>
+
+        <div class="row g-4" id="games-container">
+            <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
         </div>
     </div>
 </div>
 
-
-        <!-- Categories -->
-        <div class="container py-5">
-            <h2 class="section-title">Browse Categories</h2>
-            <div class="row g-4">
-                <div class="col-md-3 col-sm-6">
-                    <div class="category-card">
-                        <div class="category-icon">
-                            <i class="fas fa-fighter-jet"></i>
-                        </div>
-                        <h5>Action</h5>
-                        <p class="category-count">224 games</p>
-                    </div>
+<!-- 2. PRODUCT DETAILS PAGE -->
+<div id="product-details" class="page-section">
+    <div class="container">
+        <button class="btn btn-secondary mb-3" onclick="showPage('home')">&larr; Back</button>
+        <div class="row">
+            <div class="col-md-4">
+                <img id="detail-img" class="img-fluid rounded shadow w-100">
+            </div>
+            <div class="col-md-8">
+                <h1 id="detail-title" class="fw-bold"></h1>
+                <h3 id="detail-price" class="text-primary"></h3>
+                <p id="detail-desc" class="lead text-muted mt-3"></p>
+                <div class="my-4">
+                    <span id="detail-cat" class="badge bg-info me-2"></span>
+                    <span id="detail-date" class="badge bg-secondary me-2"></span>
+                    <span id="detail-platform" class="badge bg-warning text-dark"></span>
                 </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="category-card">
-                        <div class="category-icon">
-                            <i class="fas fa-hat-wizard"></i>
-                        </div>
-                        <h5>RPG</h5>
-                        <p class="category-count">189 games</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="category-card">
-                        <div class="category-icon">
-                            <i class="fas fa-flag-checkered"></i>
-                        </div>
-                        <h5>Racing</h5>
-                        <p class="category-count">76 games</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="category-card">
-                        <div class="category-icon">
-                            <i class="fas fa-ghost"></i>
-                        </div>
-                        <h5>Horror</h5>
-                        <p class="category-count">92 games</p>
-                    </div>
-                </div>
+                <button class="btn btn-lg btn-success w-100" id="detail-buy-btn">Add to Cart</button>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 
-    <!-- Games Page -->
-    <section id="games" class="page-section">
-        <div class="container py-5">
-            <h2 class="section-title">Browse All Games</h2>
-            <div class="content-card">
-                <div class="game-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5>Cyber Revolution</h5>
-                            <p class="mb-0">Action, Adventure | $39.99</p>
-                        </div>
-                        <button class="btn btn-game btn-sm">View Details</button>
-                    </div>
+<!-- 3. CART PAGE -->
+<div id="cart" class="page-section">
+    <div class="container">
+        <h2 data-lang="cart">Shopping Cart</h2>
+        <div id="cart-items" class="my-4">
+             <p class="text-muted">Cart is empty.</p>
+        </div>
+        <div class="text-end">
+            <h4 id="cart-total">Total: $0.00</h4>
+            <button class="btn btn-primary mt-2 btn-lg" onclick="showPayment()">Proceed to Payment</button>
+        </div>
+    </div>
+</div>
+
+<!-- 4. PAYMENT PAGE -->
+<div id="payment" class="page-section">
+    <div class="container col-md-6">
+        <div class="card p-4 shadow">
+            <h3 class="text-center mb-4">Secure Checkout</h3>
+            <form onsubmit="event.preventDefault(); processPayment();">
+                <div class="mb-3">
+                    <label>Card Number (12 Digits)</label>
+                    <input type="text" id="card-num" class="form-control bg-dark text-white" maxlength="12" placeholder="123456789012" required>
                 </div>
-                <div class="game-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5>Fantasy Realms</h5>
-                            <p class="mb-0">RPG, Fantasy | $49.99</p>
-                        </div>
-                        <button class="btn btn-game btn-sm">View Details</button>
-                    </div>
+                <div class="mb-3">
+                    <label>Card Holder Name</label>
+                    <input type="text" id="card-name" class="form-control bg-dark text-white" minlength="12" maxlength="36" placeholder="John Doe Smith" required>
                 </div>
-                <div class="game-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5>Racing Extreme</h5>
-                            <p class="mb-0">Racing, Sports | $29.99</p>
-                        </div>
-                        <button class="btn btn-game btn-sm">View Details</button>
-                    </div>
+                <div class="row mb-3">
+                    <div class="col"><input type="text" class="form-control bg-dark text-white" placeholder="MM/YY" required></div>
+                    <div class="col"><input type="text" class="form-control bg-dark text-white" placeholder="CVV (3 digits)" maxlength="3" required></div>
                 </div>
-                <div class="text-center mt-4">
-                    <button class="btn btn-game">Load More Games</button>
-                </div>
+                <button class="btn btn-success w-100 py-2 fw-bold">Pay & Receive Keys</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 5. MY LIBRARY (Split Section) -->
+<div id="library" class="page-section">
+    <div class="container">
+        <h2 class="mb-4" data-lang="library">My Library</h2>
+        <ul class="nav nav-tabs border-secondary">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#lib-games">My Games</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#lib-cards">Digital Codes</a></li>
+        </ul>
+        <div class="tab-content bg-dark">
+            <div class="tab-pane fade show active" id="lib-games">
+                <div class="row g-3" id="lib-games-list"><p class="text-muted p-3">No games purchased yet.</p></div>
+            </div>
+            <div class="tab-pane fade" id="lib-cards">
+                <div class="row g-3" id="lib-cards-list"><p class="text-muted p-3">No codes purchased yet.</p></div>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 
-    <!-- My Library Page -->
-    <section id="library" class="page-section">
-        <div class="container py-5">
-            <h2 class="section-title">My Game Library</h2>
-            <div class="content-card">
-                <p>Your purchased games will appear here.</p>
-                <div class="game-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5>Space Odyssey</h5>
-                            <p class="mb-0">Purchased on: 2023-10-15</p>
-                        </div>
-                        <button class="btn btn-game btn-sm">Play</button>
-                    </div>
+<!-- 6. WISHLIST -->
+<div id="wishlist" class="page-section">
+    <div class="container">
+        <h2 class="mb-4" data-lang="wishlist">My Wishlist</h2>
+        <div class="row g-4" id="wishlist-container">
+             <p class="text-muted">Wishlist is empty.</p>
+        </div>
+    </div>
+</div>
+
+<!-- 7. ADMIN DASHBOARD -->
+<div id="admin" class="page-section">
+    <div class="container">
+        <h2 class="text-danger mb-4"><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
+        <div class="row mb-4">
+            <div class="col-md-4"><div class="card p-3 text-center bg-dark border-success"><h3>Revenue</h3><p class="h4 text-success" id="admin-rev">$0</p></div></div>
+            <div class="col-md-4"><div class="card p-3 text-center bg-dark border-info"><h3>Users</h3><p class="h4 text-info" id="admin-users">0</p></div></div>
+            <div class="col-md-4"><div class="card p-3 text-center bg-dark border-warning"><h3>Orders</h3><p class="h4 text-warning" id="admin-orders">0</p></div></div>
+        </div>
+        <!-- Add Game Form -->
+        <div class="card p-4 mb-4 bg-dark border-secondary">
+            <h4><i class="fas fa-plus-circle"></i> Add New Game</h4>
+            <div class="row g-2">
+                <div class="col-md-6"><input type="text" id="new-title" class="form-control bg-black text-white" placeholder="Game Title"></div>
+                <div class="col-md-3"><input type="number" id="new-price" class="form-control bg-black text-white" placeholder="Price (USD)"></div>
+                <div class="col-md-3">
+                    <select id="new-cat" class="form-select bg-black text-white">
+                        <option value="Action">Action</option>
+                        <option value="RPG">RPG</option>
+                        <option value="FPS">FPS</option>
+                        <option value="Cards">Gift Card</option>
+                    </select>
                 </div>
-                <div class="game-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5>Cyber Revolution</h5>
-                            <p class="mb-0">Purchased on: 2023-09-22</p>
-                        </div>
-                        <button class="btn btn-game btn-sm">Play</button>
-                    </div>
-                </div>
-                <div class="text-center mt-4">
-                    <button class="btn btn-game" onclick="showPage('games')">Browse Store</button>
-                </div>
+                <div class="col-12"><input type="text" id="new-img" class="form-control bg-black text-white" placeholder="Image URL"></div>
+                <div class="col-12"><textarea id="new-desc" class="form-control bg-black text-white" placeholder="Description"></textarea></div>
+                <button class="btn btn-success w-100 mt-2" onclick="adminAddGame()">Save Game</button>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 
-    <!-- Admin Panel -->
-    <section id="admin" class="page-section">
-        <div class="container py-5">
-            <h2 class="section-title">Admin Panel</h2>
-            <div class="content-card">
-                <div class="row text-center">
-                    <div class="col-md-6 mb-3">
-                        <div class="game-item">
-                            <h5><i class="fas fa-chart-bar"></i></h5>
-                            <p>Sales Analytics</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="game-item">
-                            <h5><i class="fas fa-gamepad"></i></h5>
-                            <p>Game Management</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="game-item">
-                            <h5><i class="fas fa-users"></i></h5>
-                            <p>User Management</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="game-item">
-                            <h5><i class="fas fa-cog"></i></h5>
-                            <p>Settings</p>
-                        </div>
-                    </div>
-                </div>
+<!-- 8. LOGIN & REGISTER -->
+<div id="login" class="page-section">
+    <div class="container col-md-4">
+        <div class="card p-4 shadow">
+            <h3 class="text-center mb-3">Login</h3>
+            <input type="email" id="login-email" class="form-control my-2" placeholder="Email">
+            <input type="password" id="login-pass" class="form-control my-2" placeholder="Password">
+            <button class="btn btn-primary w-100 my-2" onclick="handleLogin()">Sign In</button>
+            <div class="text-center border-top pt-3">
+                 <small class="text-muted d-block">Don't have an account?</small>
+                 <button class="btn btn-sm btn-outline-secondary mt-1" onclick="alert('Registration is auto-handled on first login for this demo!')">Register</button>
+            </div>
+            <div class="alert alert-info mt-3 small">
+                <strong>Demo Accounts:</strong><br>
+                Admin: Admin@gamehub.com / Admin@30<br>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 
-    <!-- Login Page -->
-    <section id="login" class="page-section">
-        <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="content-card">
-                        <h2 class="text-center mb-4">Login to Your Account</h2>
-                        <form id="loginForm">
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Username or Email</label>
-                                <input type="text" class="form-control" id="username" placeholder="Enter your username or email" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
-                            </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="rememberMe">
-                                <label class="form-check-label" for="rememberMe">Remember me</label>
-                            </div>
-                            <button type="submit" class="btn btn-login">Login</button>
-                        </form>
-                        <div class="login-links">
-                            <a href="#">Forgot your password?</a>
-                            <p class="mt-2">Don't have an account? <a href="#" onclick="showPage('register')">Sign up</a></p>
-                        </div>
-                        <div class="social-login">
-                            <a href="#" class="social-btn facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-btn google"><i class="fab fa-google"></i></a>
-                            <a href="#" class="social-btn twitter"><i class="fab fa-twitter"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // --- GLOBAL STATE ---
+    let games = [];
+    let cart = [];
+    let currentUser = null;
+    let rate = 1; // USD default
+    let symbol = "$";
 
-    <!-- Register Page -->
-    <section id="register" class="page-section">
-        <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="content-card">
-                        <h2 class="text-center mb-4">Create Your Account</h2>
-                        <form id="registerForm">
-                            <div class="mb-3">
-                                <label for="fullName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" placeholder="Choose a username" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" placeholder="Create a password" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="confirmPassword" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
-                            </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="terms">
-                                <label class="form-check-label" for="terms">I agree to the Terms of Service</label>
-                            </div>
-                            <button type="submit" class="btn btn-login">Create Account</button>
-                        </form>
-                        <div class="login-links">
-                            <p class="mt-2">Already have an account? <a href="#" onclick="showPage('login')">Login here</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    const DICT = {
+        en: { home: "Home", library: "My Library", wishlist: "Wishlist", cart: "Shopping Cart", welcome: "Welcome to GameHub", hero_desc: "Cheap Games, Instant Delivery." },
+        ar: { home: "الرئيسية", library: "مكتبتي", wishlist: "المفضلة", cart: "سلة التسوق", welcome: "مرحباً بك في جيم هب", hero_desc: "ألعاب رخيصة، تسليم فوري." }
+    };
 
-    <!-- Profile Page -->
-    <section id="profile" class="page-section">
-        <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="content-card">
-                        <div class="text-center mb-4">
-                            <div class="mb-3">
-                                <i class="fas fa-user-circle" style="font-size: 4rem; color: #ff6b6b;"></i>
-                            </div>
-                            <h4>John Doe</h4>
-                            <p>Member since: January 2023</p>
-                        </div>
-                        <form>
-                            <div class="mb-3">
-                                <label for="profileName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="profileName" value="John Doe">
-                            </div>
-                            <div class="mb-3">
-                                <label for="profileEmail" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="profileEmail" value="john.doe@example.com">
-                            </div>
-                            <div class="mb-3">
-                                <label for="profileUsername" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="profileUsername" value="johndoe">
-                            </div>
-                            <button type="submit" class="btn btn-login">Update Profile</button>
-                        </form>
-                        <div class="mt-4">
-                            <h5>Account Settings</h5>
-                            <div class="game-item">
-                                <p class="mb-1"><strong>Change Password</strong></p>
-                                <button class="btn btn-game btn-sm">Change</button>
-                            </div>
-                            <div class="game-item mt-2">
-                                <p class="mb-1"><strong>Privacy Settings</strong></p>
-                                <button class="btn btn-game btn-sm">Configure</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Wishlist Page -->
-    <section id="wishlist" class="page-section">
-        <div class="container py-5">
-            <h2 class="section-title">My Wishlist</h2>
-            <div class="content-card">
-                <div class="game-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5>Fantasy Realms</h5>
-                            <p class="mb-0">RPG, Fantasy | $49.99</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-game btn-sm me-2">Add to Cart</button>
-                            <button class="btn btn-outline-light btn-sm"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="game-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5>Racing Extreme</h5>
-                            <p class="mb-0">Racing, Sports | $29.99</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-game btn-sm me-2">Add to Cart</button>
-                            <button class="btn btn-outline-light btn-sm"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mt-4">
-                    <p>You have 2 games in your wishlist</p>
-                    <button class="btn btn-game" onclick="showPage('games')">Continue Shopping</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Logout Page -->
-    <section id="logout" class="page-section">
-        <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="content-card text-center">
-                        <div class="mb-4">
-                            <i class="fas fa-sign-out-alt" style="font-size: 4rem; color: #ff6b6b;"></i>
-                        </div>
-                        <h4>Are you sure you want to logout?</h4>
-                        <p>You will need to login again to access your account.</p>
-                        <div class="d-flex gap-3 justify-content-center mt-4">
-                            <button class="btn btn-game" onclick="showPage('home')">Cancel</button>
-                            <button class="btn btn-outline-light" onclick="alert('Logout functionality would be implemented with backend')">Logout</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Cart Page -->
-    <section id="cart" class="page-section">
-        <div class="container py-5">
-            <h2 class="section-title">Shopping Cart</h2>
-            <div class="content-card">
-                <div class="game-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5>Cyber Revolution</h5>
-                            <p class="mb-0">$39.99</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-game btn-sm">Remove</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="game-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5>Fantasy Realms</h5>
-                            <p class="mb-0">$49.99</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-game btn-sm">Remove</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mt-4">
-                    <h4>Total: $89.98</h4>
-                    <button class="btn btn-game mt-3">Proceed to Checkout</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    
-    <!-- Bootstrap Script -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- MERGED GAMEHUB SCRIPT -->
-    <script>
-        // --- 1. PAGE NAVIGATION (Keep your existing code) ---
-        function showPage(pageId) {
-            const pages = document.querySelectorAll('.page-section');
-            pages.forEach(page => {
-                page.classList.remove('active');
-            });
-            const activePage = document.getElementById(pageId);
-            if(activePage) activePage.classList.add('active');
-            window.scrollTo(0, 0);
-        }
-
-        // Handle forms (Keep your existing code)
-        document.getElementById('loginForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Login functionality coming soon...');
-            showPage('home');
-        });
-        
-        document.getElementById('registerForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Registration functionality coming soon...');
-            showPage('home');
-        });
-
-
-        // --- 2. NEW BACKEND CONNECTION (The part I gave you) ---
-        
-        // Run this when the page loads
-        document.addEventListener("DOMContentLoaded", () => {
-            console.log("GameHub Loaded. Fetching games...");
-            loadGames();
-        });
-
-        function loadGames() {
-            fetch('/api/products')
-                .then(res => res.json())
-                .then(products => {
-                    const container = document.getElementById('games-container');
-                    // Check if container exists before trying to fill it
-                    if (!container) return; 
-
-                    container.innerHTML = ''; // Clear loading spinner
-
-                    if (products.length === 0) {
-                        container.innerHTML = '<p class="text-white text-center">No games found in database.</p>';
-                        return;
-                    }
-
-                    products.forEach(game => {
-                        const card = `
-                            <div class="col-md-3 mb-4">
-                                <div class="card h-100 bg-dark text-white border-secondary shadow-sm">
-                                    <div class="position-relative">
-                                        <span class="badge bg-danger position-absolute top-0 end-0 m-2">HOT</span>
-                                        <img src="${game.imageUrl || 'https://placehold.co/400'}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="${game.title}">
-                                    </div>
-                                    <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title">${game.title}</h5>
-                                        <p class="text-muted small mb-2">${game.category}</p>
-                                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                                            <span class="h5 text-warning mb-0">${game.priceSar} SAR</span>
-                                            <button onclick="buyGame(${game.id}, '${game.title}')" class="btn btn-primary btn-sm">Buy Now</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`;
-                        container.innerHTML += card;
-                    });
-                })
-                .catch(err => {
-                    console.error("Error loading games:", err);
-                    const container = document.getElementById('games-container');
-                    if(container) container.innerHTML = '<p class="text-danger text-center">Backend connection failed.</p>';
-                });
-        }
-
-        // Virtual Payment Logic
-        function buyGame(id, title) {
-            const email = prompt(`Enter email to receive '${title}':`);
-            if (!email) return;
-
-            const card = prompt("Enter Virtual Card (16 digits):", "1234567812345678");
-            if (!card) return;
-
-            fetch('/api/checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ productId: id, email: email, cardNumber: card })
-            })
-            .then(res => res.json())
+    // --- INIT ---
+    document.addEventListener("DOMContentLoaded", () => {
+        fetch('/api/products')
+            .then(r => r.json())
             .then(data => {
-                if (data.status === 'success') {
-                    alert(`✅ SUCCESS!\n\nGame: ${title}\nKey: ${data.gameKey}\n\n(Check email: ${email})`);
-                } else {
-                    alert("❌ Failed: " + (data.error || "Unknown error"));
-                }
+                games = data;
+                renderGames(games, 'games-container');
             })
-            .catch(err => alert("Network Error"));
+            .catch(e => console.error("Backend not running?", e));
+    });
+
+    // --- RENDERING ---
+    function renderGames(list, containerId) {
+        const div = document.getElementById(containerId);
+        div.innerHTML = '';
+        if(list.length === 0) { div.innerHTML = '<p class="text-white">No games found.</p>'; return; }
+        
+        list.forEach(g => {
+            let price = (g.priceUsd * rate).toFixed(2);
+            div.innerHTML += `
+                <div class="col-md-3 col-sm-6">
+                    <div class="card h-100">
+                        <img src="${g.imageUrl}" class="card-img-top" style="height:180px; object-fit:cover" alt="${g.title}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-truncate">${g.title}</h5>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-secondary">${g.category}</span>
+                                <i class="fas fa-heart ${currentUser ? 'text-danger' : 'text-secondary'}" 
+                                   style="cursor:pointer" onclick="addToWishlist(${g.id})" title="Add to Wishlist"></i>
+                            </div>
+                            <div class="mt-auto d-flex justify-content-between align-items-center">
+                                <h5 class="text-warning mb-0">${symbol}${price}</h5>
+                                <button class="btn btn-sm btn-primary" onclick="openDetails(${g.id})">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        });
+    }
+
+    function openDetails(id) {
+        const g = games.find(x => x.id === id);
+        if(!g) return;
+        document.getElementById('detail-title').innerText = g.title;
+        document.getElementById('detail-desc').innerText = g.description;
+        document.getElementById('detail-price').innerText = symbol + (g.priceUsd * rate).toFixed(2);
+        document.getElementById('detail-img').src = g.imageUrl;
+        document.getElementById('detail-cat').innerText = g.category;
+        document.getElementById('detail-date').innerText = "Released: " + (g.releaseDate || 'N/A');
+        document.getElementById('detail-platform').innerText = g.platform || 'PC';
+        
+        const btn = document.getElementById('detail-buy-btn');
+        btn.innerText = "Add to Cart";
+        btn.onclick = () => { 
+            cart.push(g); 
+            document.getElementById('cart-count').innerText = cart.length; 
+            alert("Added to Cart!"); 
+        };
+        showPage('product-details');
+    }
+
+    // --- SETTINGS (Currency/Lang) ---
+    function updateSettings() {
+        const cur = document.getElementById('currency').value;
+        const lang = document.getElementById('language').value;
+        
+        // Currency
+        if(cur === 'SAR') { rate = 3.75; symbol = "SAR "; } else { rate = 1; symbol = "$"; }
+        
+        // Language
+        document.body.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+        const texts = DICT[lang];
+        document.querySelectorAll('[data-lang]').forEach(el => {
+            if(texts[el.dataset.lang]) el.innerText = texts[el.dataset.lang];
+        });
+        
+        // Re-render current views
+        renderGames(games, 'games-container'); 
+        if(document.getElementById('cart').classList.contains('active')) updateCartUI();
+    }
+
+    // --- CART & CHECKOUT ---
+    function showPayment() {
+        if(cart.length === 0) return alert("Cart is empty!");
+        if(!currentUser) return showPage('login');
+        showPage('payment');
+    }
+
+    function updateCartUI() {
+        const container = document.getElementById('cart-items');
+        container.innerHTML = '';
+        let total = 0;
+        if(cart.length === 0) container.innerHTML = '<p class="text-muted">Cart is empty.</p>';
+        
+        cart.forEach((item, idx) => {
+            let price = (item.priceUsd * rate).toFixed(2);
+            total += parseFloat(price);
+            container.innerHTML += `
+                <div class="d-flex justify-content-between align-items-center bg-dark p-3 mb-2 rounded border border-secondary">
+                    <div><h5 class="mb-0">${item.title}</h5><small>${item.category}</small></div>
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="text-warning h5 mb-0">${symbol}${price}</span>
+                        <button class="btn btn-sm btn-outline-danger" onclick="cart.splice(${idx},1); updateCartUI()">X</button>
+                    </div>
+                </div>`;
+        });
+        document.getElementById('cart-total').innerText = `Total: ${symbol}${total.toFixed(2)}`;
+        document.getElementById('cart-count').innerText = cart.length;
+    }
+
+    function processPayment() {
+        const card = document.getElementById('card-num').value;
+        const name = document.getElementById('card-name').value;
+
+        if(card.length !== 12 || name.length < 12 || name.length > 36) {
+            alert("Invalid Card Details!\n- Card must be exactly 12 digits.\n- Name must be 12-36 characters.");
+            return;
         }
-    </script>
+
+        // Parallel Requests
+        let promises = cart.map(item => {
+            return fetch('/api/checkout', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ productId: item.id, email: currentUser.email, cardNumber: card })
+            });
+        });
+
+        Promise.all(promises).then(() => {
+            alert("Payment Successful!\n\nReceipt sent to: " + currentUser.email + "\nCheck 'My Library' for activation keys.");
+            cart = [];
+            updateCartUI();
+            showPage('library');
+        });
+    }
+
+    // --- LIBRARY & WISHLIST ---
+    function loadLibrary() {
+        if(!currentUser) return;
+        fetch('/api/my-library?email=' + currentUser.email)
+            .then(r => r.json())
+            .then(orders => {
+                const gamesList = document.getElementById('lib-games-list');
+                const cardsList = document.getElementById('lib-cards-list');
+                gamesList.innerHTML = ''; cardsList.innerHTML = '';
+                
+                if(orders.length === 0) {
+                    gamesList.innerHTML = '<p class="text-muted p-3">No purchases found.</p>';
+                    return;
+                }
+
+                orders.forEach(o => {
+                    // Determine type simple hack: if name contains "Card" or "Pass" -> Code, else Game
+                    const isCard = o.productName.includes("Card") || o.productName.includes("Pass") || o.productName.includes("Plus");
+                    const target = isCard ? cardsList : gamesList;
+                    
+                    target.innerHTML += `
+                        <div class="col-12">
+                            <div class="card p-3 d-flex flex-row justify-content-between align-items-center bg-black border-secondary">
+                                <div>
+                                    <h5 class="text-white mb-0">${o.productName}</h5>
+                                    <small class="text-muted">Date: ${o.orderDate}</small>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-success p-2 mb-1">PAID</span><br>
+                                    de class="text-warning user-select-all">${o.transactionId}</code>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            });
+    }
+
+    function addToWishlist(id) {
+        if(!currentUser) return showPage('login');
+        fetch('/api/wishlist/add', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ email: currentUser.email, productId: id })
+        }).then(r => {
+            if(r.ok) alert("Added to Wishlist!");
+        });
+    }
+    
+    function loadWishlist() {
+        if(!currentUser) return;
+        fetch('/api/wishlist?email=' + currentUser.email)
+            .then(r => r.json())
+            .then(list => {
+                renderGames(list, 'wishlist-container');
+            });
+    }
+
+    // --- ADMIN & AUTH ---
+    function handleLogin() {
+        const e = document.getElementById('login-email').value;
+        const p = document.getElementById('login-pass').value;
+        fetch('/api/login', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ email: e, password: p })
+        }).then(r => r.json()).then(data => {
+            if(data.error) alert(data.error);
+            else {
+                currentUser = data;
+                document.getElementById('auth-btn').innerText = "Logout";
+                document.getElementById('auth-btn').onclick = () => location.reload();
+                
+                if(data.role === 'ADMIN') {
+                    loadAdminStats();
+                    showPage('admin');
+                } else {
+                    showPage('home');
+                }
+            }
+        });
+    }
+
+    function loadAdminStats() {
+        fetch('/api/admin/sales').then(r => r.json()).then(d => {
+            document.getElementById('admin-rev').innerText = symbol + (d.totalRevenue * rate).toFixed(2);
+            document.getElementById('admin-users').innerText = d.totalUsers;
+            document.getElementById('admin-orders').innerText = d.totalOrders;
+        });
+    }
+
+    function adminAddGame() {
+        const data = {
+            title: document.getElementById('new-title').value,
+            priceUsd: document.getElementById('new-price').value,
+            category: document.getElementById('new-cat').value,
+            imageUrl: document.getElementById('new-img').value,
+            description: document.getElementById('new-desc').value,
+            type: document.getElementById('new-cat').value === 'Cards' ? 'CARD' : 'GAME'
+        };
+        fetch('/api/admin/product', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(data)
+        }).then(r => {
+            if(r.ok) { alert("Game Added!"); location.reload(); }
+        });
+    }
+
+    function filterGames(cat) {
+        if(cat === 'all') renderGames(games, 'games-container');
+        else renderGames(games.filter(g => g.category.includes(cat)), 'games-container');
+    }
+
+    function showPage(id) {
+        document.querySelectorAll('.page-section').forEach(x => x.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'library') loadLibrary();
+        if(id === 'wishlist') loadWishlist();
+        if(id === 'cart') updateCartUI();
+    }
+</script>
 </body>
 </html>
